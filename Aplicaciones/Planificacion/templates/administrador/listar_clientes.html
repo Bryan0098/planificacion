@@ -1,0 +1,116 @@
+{% extends 'administrador/plantilla-admin.html' %}
+{% block contenido %}
+<div class="container py-4">
+    <h1 class="text-primary text-center">Lista de Clientes</h1>
+    <div class="mb-3 text-end">
+        <a href="{% url 'crear_cliente' %}" class="btn btn-success">Registrar Nuevo Cliente</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped" id="clientes">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Foto</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cliente in clientes %}
+                <tr>
+                    <td>{{ cliente.nombre }}</td>
+                    <td>{{ cliente.telefono }}</td>
+                    <td>{{ cliente.email }}</td>
+                    <td>
+                        {% if cliente.foto %}
+                        <a href="{{ cliente.foto.url }}" target="_blank">
+                            <img src="{{ cliente.foto.url }}" alt="Foto" class="img-fluid">
+                        </a>
+                        {% else %}
+                        <span class="text-muted">No disponible</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'detalle_cliente' cliente.id_cliente %}" class="btn btn-info btn-sm">Ver Detalle</a>
+                        <a href="{% url 'editar_cliente' cliente.id_cliente %}" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="{% url 'eliminar_cliente' cliente.id_cliente %}" class="btn btn-danger btn-sm" onclick="return confirm('Estás seguro de eliminar este cliente?');">Eliminar</a>
+                        
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#clientes').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy',
+                'excel',
+                'pdf',
+                'print'
+            ],
+            language: {
+                url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
+            }
+        });
+    });
+</script>
+<style>
+    /* Hacer la tabla responsiva */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Asegurarse de que las imágenes no se desborden */
+    table img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+    }
+
+    /* Estilo para las tablas en pantallas pequeñas */
+    @media (max-width: 768px) {
+        .table thead {
+            display: none; /* Ocultamos los encabezados */
+        }
+
+        .table tr {
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .table td {
+            display: block;
+            text-align: right;
+            font-size: 14px;
+            padding: 8px;
+            position: relative;
+        }
+
+        .table td::before {
+            content: attr(data-label);
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-weight: bold;
+            padding-right: 10px;
+        }
+
+        .table td:last-child {
+            text-align: left;
+        }
+    }
+
+    /* Estilo para los botones de la tabla */
+    .btn-sm {
+        margin: 2px;
+    }
+
+</style>
+{% endblock %}

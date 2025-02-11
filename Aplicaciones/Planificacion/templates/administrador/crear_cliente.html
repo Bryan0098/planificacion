@@ -1,0 +1,98 @@
+    {% extends 'administrador/plantilla-admin.html' %}
+    {% load static %}
+
+    {% block contenido %}
+    <div class="bg-light py-4">
+        <div class="container">
+            <h1 class="text-primary text-center">Registrar Cliente</h1>
+            <p class="text-muted text-center">Completa el formulario para registrar un nuevo cliente</p>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body">
+                            <form method="POST" action="{% url 'crear_cliente' %}" enctype="multipart/form-data" id="form_cliente">
+                                {% csrf_token %}
+                                <div class="form-group mb-3">
+                                    <label for="nombre" class="form-label">Nombre</label>
+                                    <input type="text" name="nombre" id="nombre" class="form-control" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="telefono" class="form-label">Teléfono</label>
+                                    <input type="text" name="telefono" id="telefono" class="form-control" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="email" class="form-label">Correo Electrónico</label>
+                                    <input type="email" name="email" id="email" class="form-control" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="foto" class="form-label">Foto del Cliente (opcional)</label>
+                                    <input type="file" name="foto" id="foto" class="form-control" accept="image/*">
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Registrar Cliente</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $("#foto").fileinput({
+            lenguaje: "es",
+            allowedFileExtensions: ["jpg", "png", "jpeg"],
+            showCaption: false,
+            dropZoneEnabled: true,
+            showClose: false
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#form_cliente").validate({
+                rules: {
+                    "nombre": {
+                        required: true,
+                        minlength: 3,
+                        letras: true
+                    },
+                    "telefono": {
+                        required: true,
+                        minlength: 10,
+                        digits: true // Para que solo acepte números
+                    },
+                    "email": {
+                        required: true,
+                        email: true // Para validar el formato del correo
+                    },
+                    "foto": {
+                        extension: "jpg|jpeg|png|gif|bmp"
+                    }
+                },
+                messages: {
+                    "nombre": {
+                        required: "Por favor, ingresa el nombre del cliente.",
+                        minlength: "El nombre del cliente debe tener al menos 3 caracteres."
+                    },
+                    "telefono": {
+                        required: "Por favor, ingresa el teléfono del cliente.",
+                        minlength: "El teléfono debe tener al menos 10 caracteres.",
+                        digits: "Por favor, ingresa un número de teléfono válido."
+                    },
+                    "email": {
+                        required: "Por favor, ingresa el correo electrónico del cliente.",
+                        email: "Por favor, ingresa un correo electrónico válido."
+                    },
+                    "foto": {
+                        extension: "Solo se permiten archivos de imagen (jpg, jpeg, png, gif, bmp)."
+                    }
+                }
+            });
+        });
+    
+        // Validación para solo letras en ciertos campos
+        jQuery.validator.addMethod("letras", function(value, element) {            
+            return this.optional(element) || /^[A-Za-zÁÉÍÓÚÑáéíóúñ ]*$/.test(value);
+        }, "Este campo solo acepta letras");
+    </script>
+    
+    {% endblock %}

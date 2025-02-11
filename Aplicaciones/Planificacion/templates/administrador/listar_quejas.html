@@ -1,0 +1,68 @@
+{% extends 'administrador/plantilla-admin.html' %}
+{% block contenido %}
+<div class="container py-4">
+    <h1 class="text-primary text-center">Lista de Quejas</h1>
+    <div class="mb-3 text-end">
+        <a href="{% url 'crear_queja' %}" class="btn btn-success">Registrar Nueva Queja</a>
+    </div>
+    <table class="table table-striped" id="quejas" >
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Cédula</th>
+                <th>Detalle</th>
+                <th>Email</th>
+                <th>Foto</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for queja in quejas %}
+            <tr>
+                <td>{{ queja.nombre }}</td>
+                <td>{{ queja.apellido }}</td>
+                <td>{{ queja.cedula }}</td>
+                <td>{{ queja.detalle }}</td>
+                <td>{{ queja.Email }}</td>
+                <td>
+                    {% if queja.foto %}
+                    <a href="{{ queja.foto.url }}" target="_blank">
+                        <img src="{{ queja.foto.url }}" alt="Foto" style="height: 80px; width: 80px; object-fit: cover;">
+                    </a>
+                    {% else %}
+                    <span class="text-muted">No disponible</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'detalle_queja' queja.id_queja %}" class="btn btn-info btn-sm">Ver Detalle</a>
+                </td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+
+<script>
+
+    $(document).ready(function() {
+        $('#quejas').DataTable({
+            dom: 'Bfrtip',  // Activa botones para exportar
+            buttons: [
+                'copy',       // Copiar al portapapeles
+                'excel',      // Exportar a Excel
+                'pdf',        // Exportar a PDF
+                'print'       // Imprimir
+            ],
+            language: {
+                url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json" // Traducción al español
+                // Traducción al español
+            }
+        });
+    });
+</script>
+
+{% endblock %}

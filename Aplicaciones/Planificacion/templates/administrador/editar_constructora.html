@@ -1,0 +1,43 @@
+{% extends 'administrador/plantilla-admin.html' %}
+{% load static %}
+
+{% block contenido %}
+<div class="bg-light py-4">
+    <div class="container">
+        <h1 class="text-primary text-center">Editar Constructora</h1>
+        <p class="text-muted text-center">Actualiza la información de la constructora</p>
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <form method="POST" action="{% url 'editar_constructora' constructora.id_constructora %}">
+                            {% csrf_token %}
+                            <div class="form-group mb-3">
+                                <label for="nombre" class="form-label">Nombre de la Constructora</label>
+                                <input type="text" name="nombre" id="nombre" class="form-control" value="{{ constructora.nombre }}" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="telefono" class="form-label">Teléfono</label>
+                                <input type="text" name="telefono" id="telefono" class="form-control" value="{{ constructora.telefono }}" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="email" class="form-label">Correo Electrónico</label>
+                                <input type="email" name="email" id="email" class="form-control" value="{{ constructora.email }}" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="ciudad" class="form-label">Ciudad</label>
+                                <input type="text" name="ciudad" id="ciudad" class="form-control" value="{{ constructora.ciudad }}" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="direccion" class="form-label">Dirección</label>
+                                <input type="text" name="direccion" id="direccion" class="form-control" value="{{ constructora.direccion }}" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Actualizar Constructora</button>
+                        </form>
+                    </div>              
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

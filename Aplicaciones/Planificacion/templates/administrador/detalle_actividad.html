@@ -1,0 +1,97 @@
+{% extends 'administrador/plantilla-admin.html' %}
+{% load static %}
+
+{% block contenido %}
+<div class="bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center text-primary mb-4">Reporte de Actividad</h1>
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Información de la Actividad -->
+                            <div class="col-md-6">
+                                <h4 class="mb-3">Detalles de la Actividad</h4>
+                                <table class="table">
+                                    <tr>
+                                        <th>Descripción:</th>
+                                        <td>{{ actividad.descripcion }}</td>
+                                    </tr>
+                                                        
+                                    <tr>
+                                        <th>Duración:</th>
+                                        <td>{{ actividad.duracion }} horas</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Vivienda Asociada:</th>
+                                        <td>
+                                            {% if actividad.vivienda %}
+                                                {{ actividad.vivienda.direccion }}
+                                            {% else %}
+                                                No asignada
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <th>Cliente Responsable:</th>
+                                        <td>
+                                            {% if actividad.cliente %}
+                                                {{ actividad.cliente.nombre }}
+                                            {% else %}
+                                                No asignado
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    
+                                </table>
+                            </div>
+
+                            <!-- Foto de la Actividad (si está disponible) -->
+                            {% if actividad.foto %}
+                            <div class="col-md-6">
+                                <h4 class="mb-3">Foto de la Actividad</h4>
+                                <img src="{{ actividad.foto.url }}" alt="Foto de la actividad" class="img-fluid rounded">
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Botón para Imprimir -->
+                        <div class="mt-4 text-center">
+                            <button class="btn btn-primary" onclick="window.print()">Imprimir Reporte</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estilo para la impresión -->
+<style>
+    @media print {
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 100%;
+            padding: 0;
+        }
+        .btn {
+            display: none;
+        }
+        .card {
+            border: none;
+        }
+        .card-body {
+            padding: 15px;
+        }
+        .table th, .table td {
+            text-align: left;
+            padding: 8px;
+        }
+    }
+</style>
+
+{% endblock %}

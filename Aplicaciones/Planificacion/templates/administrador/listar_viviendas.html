@@ -1,0 +1,128 @@
+{% extends 'administrador/plantilla-admin.html' %}
+{% block contenido %}
+<div class="container py-4">
+    <h1 class="text-primary text-center">Lista de Viviendas</h1>
+    <div class="mb-3 text-end">
+        <a href="{% url 'crear_vivienda' %}" class="btn btn-success">Registrar Nueva Vivienda</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped" id="viviendas">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Tipo</th>
+                    <th>Estado</th>
+                    <th>Constructora</th>
+                    <th>Cliente</th>
+                    <th>Foto</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for vivienda in viviendas %}
+                <tr>
+                    <td>{{ vivienda.nombre }} </td>
+                    <td>{{ vivienda.direccion }}</td>
+                    <td>{{ vivienda.tipo }}</td>
+                    <td>{{ vivienda.estado }}</td>
+                    <td>{{ vivienda.id_constructora.nombre }}</td>
+                    <td>
+                        {% if vivienda.id_cliente %}
+                            {{ vivienda.id_cliente.nombre }}
+                        {% else %}
+                            <span class="text-muted">No asignado</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if vivienda.foto %}
+                        <a href="{{ vivienda.foto.url }}" target="_blank">
+                            <img src="{{ vivienda.foto.url }}" alt="Foto Vivienda" class="img-fluid">
+                        </a>
+                        {% else %}
+                        <span class="text-muted">No disponible</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'detalle_vivienda' vivienda.id_vivienda %}" class="btn btn-info btn-sm">Ver Detalle</a>
+                        <a href="{% url 'editar_vivienda' vivienda.id_vivienda %}" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="{% url 'eliminar_vivienda' vivienda.id_vivienda %}" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar esta vivienda?');">Eliminar</a>
+                        
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#viviendas').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy',
+                'excel',
+                'pdf',
+                'print'
+            ],
+            language: {
+                url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
+            }
+        });
+    });
+</script>
+<style>
+    /* Hacer la tabla responsiva */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Asegurarse de que las imágenes no se desborden */
+    table img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+    }
+
+    /* Estilo para las tablas en pantallas pequeñas */
+    @media (max-width: 768px) {
+        .table thead {
+            display: none; /* Ocultamos los encabezados */
+        }
+
+        .table tr {
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .table td {
+            display: block;
+            text-align: right;
+            font-size: 14px;
+            padding: 8px;
+            position: relative;
+        }
+
+        .table td::before {
+            content: attr(data-label);
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-weight: bold;
+            padding-right: 10px;
+        }
+
+        .table td:last-child {
+            text-align: left;
+        }
+    }
+
+    /* Estilo para los botones de la tabla */
+    .btn-sm {
+        margin: 2px;
+    }
+
+</style>
+{% endblock %}

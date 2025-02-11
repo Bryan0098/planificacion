@@ -1,0 +1,725 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
+    <meta name="author" content="AdminKit">
+    <meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+    <script src="{% static 'js/jquery-3.7.1.js' %}"></script>
+    <script src="{% static 'js/jquery.validate.js' %}"></script>
+
+    <link rel="stylesheet" href="{% static 'izitoast/iziToast.min.css' %}">
+    <script src="{% static 'izitoast/iziToast.min.js' %}"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="shortcut icon" href="img/icons/icon-48x48.png" />
+    <link rel="canonical" href="https://demo-basic.adminkit.io/" />
+
+    <title>Administración</title>
+
+    <link href="{% static 'plantilla/administrador/static/css/app.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="{% static 'img/Planificacion.ico' %}" rel="icon">
+    <link rel="stylesheet" href="{% static 'datatables/dataTables.dataTables.min.css' %}">
+    <script src="{% static 'datatables/dataTables.min.js' %}"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- cdn para dashboard-->
+    <link href="https://cdn.jsdelivr.net/npm/now-ui-dashboard/css/now-ui-dashboard.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/now-ui-dashboard/js/now-ui-dashboard.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.4/js/fileinput.min.js" integrity="sha512-0wQvB58Ha5coWmcgtg4f11CTSSxfrfLClUp9Vy0qhzYzCZDSnoB4Vhu5JXJFs7rU24LE6JsH+6hpP7vQ22lk5w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.5.4/css/fileinput.min.css" integrity="sha512-yDVMONIXJPPAoULZ92Ygngsn8ZUGB4ejm6fCc6q9ZvdH8blFAOgg75XZSEaAJ5m4E/yPI1BAi5fF2axMHVuZ5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+
+    <style>
+        /* Barra de navegación */
+        .navbar {
+            box-shadow: 0 2px 4px rgba(248, 0, 0, 0.2); /* Sombra suave en la barra */
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+            background-color: #f8f9fa; /* Fondo claro */
+        }
+        /* Estilo para el logo */
+        .navbar-brand {
+            color: #333 !important;  /* Color oscuro para el texto (Planificación) */
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Estilo para el ícono en el logo */
+        .navbar-brand i {
+            color: #e24545;  /* Azul para el ícono de la casa */
+            margin-right: 10px;  /* Espacio entre el ícono y el texto */
+        }
+
+        /* Estilo para los enlaces de navegación */
+        .nav-link {
+            font-size: 16px;
+            padding: 10px 15px;
+            text-transform: capitalize;
+            color: #333;  /* Color negro oscuro para el texto */
+        }
+
+        /* Estilo para el body */
+        body {
+            background-color: #f8f9fa;
+        }
+
+        /* Pie de página */
+        .footer {
+            background-color: #e24545; /* Fondo oscuro */
+            color: white;
+            padding: 10px 0;
+        }
+
+        .footer a {
+            color: white;  /* Color amarillo para los enlaces */
+        }
+
+        .footer a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        /* Estilo para los elementos del menú */
+        .nav-item .nav-link {
+            padding: 10px 20px;
+            font-size: 16px;
+            transition: all 0.3s ease;  /* Animación suave */
+            color: #000;  /* Color del texto negro */
+        }
+
+        /* Efecto Hover para los enlaces */
+        .nav-item .nav-link:hover {
+            background-color: #e24545;  /* Fondo rojo al pasar el mouse */
+            color: white;  /* Cambiar el color del texto a blanco */
+            border-radius: 5px;  /* Bordes redondeados */
+        }
+
+        /* Estilo para el 'Cerrar sesión' */
+        .nav-item .nav-link.text-danger {
+            font-weight: bold;  /* Texto en negrita */
+            color: #e74c3c !important;  /* Rojo fuerte para 'Cerrar sesión' */
+        }
+
+        .nav-item .nav-link.text-danger:hover {
+            background-color: #e74c3c;  /* Fondo rojo para 'Cerrar sesión' al pasar el mouse */
+            color: white;  /* Texto blanco */
+        }
+
+        /* Estilos generales */
+        .container-fluid {
+            background-color: #f8f9fa;  /* Fondo claro para el contenedor */
+            padding: 20px;
+        }
+
+        /* Sidebar */
+        .sidebar-left {
+            background-color: #e74c3c;  /* Fondo oscuro para la barra lateral */
+            color: white;  /* Texto blanco en la barra lateral */
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        /* Estilo para la imagen en el sidebar */
+        .sidebar-left img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;  /* Bordes redondeados para la imagen */
+        }
+
+        /* Título de bienvenida */
+        .sidebar-left h4 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 15px;  /* Espacio entre la imagen y el título */
+        }
+
+        /* Estilo para el texto de bienvenida */
+        .sidebar-left p {
+            font-size: 16px;
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+
+        /* Contenido Principal */
+        .main-content {
+            background-color: #fff;  /* Fondo blanco para el contenido principal */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);  /* Sombra sutil para un efecto de profundidad */
+        }
+
+        .main-content h1 {
+            color: #333;  /* Título de la sección */
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .main-content p {
+            font-size: 16px;
+            color: #555;  /* Color gris oscuro para el texto */
+            line-height: 1.8;
+        }
+        #imagen-grande {
+            width: 100%; /* Hace que la imagen ocupe todo el ancho disponible */
+            height: auto; /* Mantiene las proporciones de la imagen */
+            max-width: 1200px; /* Establece un tamaño máximo de ancho */
+            margin: 0 auto; /* Centra la imagen */
+        }
+        
+
+    </style>
+</head>
+
+<body>
+<!-- Sidebar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <div class="container-fluid">
+        <!-- Logo -->
+        <a class="navbar-brand" href="/">
+            <i class="fas fa-home"></i> Planificación
+        </a>
+        <!-- Botón de colapsar menú para pantallas pequeñas -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Elementos del menú -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <!-- Elementos de navegación (sin dropdown) -->
+                <li class="nav-item">
+                    <a class="nav-link menu-link text-light bg-danger" href="/"> Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="/clientes/">Cliente</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="/constructoras/">Constructora</a>
+                </li>
+<!--                 <li class="nav-item">
+                    <a class="nav-link menu-link" href="/quejas/">Queja</a>
+                </li> -->
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="/viviendas/">Vivienda</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="/actividades/">Actividades</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+
+
+<!-- Main content -->
+    <!-- Main Content -->
+<!-- Main Content -->
+<div class="container-fluid mt-4">
+    <div class="row">
+        <!-- Sidebar Izquierda -->
+        <div class="col-md-4 col-lg-3 sidebar-left">
+            <img src="{% static 'img/2222.jpg' %}" alt="Imagen de bienvenida" class="img-fluid rounded mb-4">
+            <h4 class="text-dark">BIENVENIDO</h4>
+            <p class="text-white">
+                Aquí puedes gestionar tus viviendas, clientes, actividades y contructoras.
+                Utiliza el menú para navegar por las diferentes secciones.
+            </p>
+        </div>
+
+        <!-- Contenido Principal -->
+        <div class="col-md-8 col-lg-9 main-content">
+            {% block contenido %}
+            <img src="{% static 'img/vivienda.jpg' %}" id="imagen-grande">
+            {% endblock %}
+        </div>
+        
+    </div>
+</div>
+
+    <footer class="footer bg-ligth text-light py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-2">
+                        <a class="btn btn-primary mx-2" href="/actividades/"><strong>+ Planificacion</strong></a>
+                        <a class="btn btn-secondary mx-2" href="/"><strong>+ Generar Reporte</strong></a>
+                    </p>
+                    <hr class="bg-light my-3">
+                    <h5 class="mb-0">&copy; 2025 Bryan Guayta</h5>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</div>
+</div>
+
+<script src="{% static 'plantilla/administrador/static/js/app.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-fileinput@5.5.1/js/locales/es.js"></script>
+
+
+<script>
+
+    document.querySelector('.nav-item.dropdown').addEventListener('click', function() {
+        this.classList.toggle('show');
+    });
+    
+document.addEventListener("DOMContentLoaded", function() {
+var ctx = document.getElementById("chartjs-dashboard-line").getContext("2d");
+var gradient = ctx.createLinearGradient(0, 0, 0, 225);
+gradient.addColorStop(0, "rgba(215, 227, 244, 1)");
+gradient.addColorStop(1, "rgba(215, 227, 244, 0)");
+// Line chart
+new Chart(document.getElementById("chartjs-dashboard-line"), {
+    type: "line",
+    data: {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        datasets: [{
+            label: "Sales ($)",
+            fill: true,
+            backgroundColor: gradient,
+            borderColor: window.theme.primary,
+            data: [
+                2115,
+                1562,
+                1584,
+                1892,
+                1587,
+                1923,
+                2566,
+                2448,
+                2805,
+                3438,
+                2917,
+                3327
+            ]
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        legend: {
+            display: false
+        },
+        tooltips: {
+            intersect: false
+        },
+        hover: {
+            intersect: true
+        },
+        plugins: {
+            filler: {
+                propagate: false
+            }
+        },
+        scales: {
+            xAxes: [{
+                reverse: true,
+                gridLines: {
+                    color: "rgba(0,0,0,0.0)"
+                }
+            }],
+            yAxes: [{
+                ticks: {
+                    stepSize: 1000
+                },
+                display: true,
+                borderDash: [3, 3],
+                gridLines: {
+                    color: "rgba(0,0,0,0.0)"
+                }
+            }]
+        }
+    }
+});
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+// Pie chart
+new Chart(document.getElementById("chartjs-dashboard-pie"), {
+    type: "pie",
+    data: {
+        labels: ["Chrome", "Firefox", "IE"],
+        datasets: [{
+            data: [4306, 3801, 1689],
+            backgroundColor: [
+                window.theme.primary,
+                window.theme.warning,
+                window.theme.danger
+            ],
+            borderWidth: 5
+        }]
+    },
+    options: {
+        responsive: !window.MSInputMethodContext,
+        maintainAspectRatio: false,
+        legend: {
+            display: false
+        },
+        cutoutPercentage: 75
+    }
+});
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+// Bar chart
+new Chart(document.getElementById("chartjs-dashboard-bar"), {
+    type: "bar",
+    data: {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        datasets: [{
+            label: "This year",
+            backgroundColor: window.theme.primary,
+            borderColor: window.theme.primary,
+            hoverBackgroundColor: window.theme.primary,
+            hoverBorderColor: window.theme.primary,
+            data: [54, 67, 41, 55, 62, 45, 55, 73, 60, 76, 48, 79],
+            barPercentage: .75,
+            categoryPercentage: .5
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        legend: {
+            display: false
+        },
+        scales: {
+            yAxes: [{
+                gridLines: {
+                    display: false
+                },
+                stacked: false,
+                ticks: {
+                    stepSize: 20
+                }
+            }],
+            xAxes: [{
+                stacked: false,
+                gridLines: {
+                    color: "transparent"
+                }
+            }]
+        }
+    }
+});
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+var markers = [{
+        coords: [31.230391, 121.473701],
+        name: "Shanghai"
+    },
+    {
+        coords: [28.704060, 77.102493],
+        name: "Delhi"
+    },
+    {
+        coords: [6.524379, 3.379206],
+        name: "Lagos"
+    },
+    {
+        coords: [35.689487, 139.691711],
+        name: "Tokyo"
+    },
+    {
+        coords: [23.129110, 113.264381],
+        name: "Guangzhou"
+    },
+    {
+        coords: [40.7127837, -74.0059413],
+        name: "New York"
+    },
+    {
+        coords: [34.052235, -118.243683],
+        name: "Los Angeles"
+    },
+    {
+        coords: [41.878113, -87.629799],
+        name: "Chicago"
+    },
+    {
+        coords: [51.507351, -0.127758],
+        name: "London"
+    },
+    {
+        coords: [40.416775, -3.703790],
+        name: "Madrid "
+    }
+];
+var map = new jsVectorMap({
+    map: "world",
+    selector: "#world_map",
+    zoomButtons: true,
+    markers: markers,
+    markerStyle: {
+        initial: {
+            r: 9,
+            strokeWidth: 7,
+            stokeOpacity: .4,
+            fill: window.theme.primary
+        },
+        hover: {
+            fill: window.theme.primary,
+            stroke: window.theme.primary
+        }
+    },
+    zoomOnScroll: false
+});
+window.addEventListener("resize", () => {
+    map.updateSize();
+});
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+var date = new Date(Date.now() - 5 * 24 * 60 * 60 * 1000);
+var defaultDate = date.getUTCFullYear() + "-" + (date.getUTCMonth() + 1) + "-" + date.getUTCDate();
+document.getElementById("datetimepicker-dashboard").flatpickr({
+    inline: true,
+    prevArrow: "<span title=\"Previous month\">&laquo;</span>",
+    nextArrow: "<span title=\"Next month\">&raquo;</span>",
+    defaultDate: defaultDate
+});
+});
+</script>
+
+<script>
+    function showDeleteConfirmation(id, type) {
+        let url = '';
+        let message = '';
+    
+        // Solo para eliminar cliente
+        if (type === 'cliente') {
+            url = `/eliminar_cliente/${id}/`;  // URL para eliminar cliente
+            message = '¿Estás seguro de que deseas eliminar este cliente?';  // Mensaje para eliminar cliente
+        }
+
+        // Solo para eliminar actividad
+        if (type === 'actividad') {
+            url = `/eliminar_actividad/${id}/`;  // URL para eliminar actividad
+            message = '¿Estás seguro de que deseas eliminar esta actividad?';  // Mensaje para eliminar actividad
+        }
+
+        // Solo para eliminar vivienda
+        if (type === 'vivienda') {
+            url = `/eliminar_vivienda/${id}/`;  // URL para eliminar vivienda
+            message = '¿Estás seguro de que deseas eliminar esta vivienda?';  // Mensaje para eliminar vivienda
+        }
+
+        // Solo para eliminar constructora
+        if (type === 'constructora') {
+            url = `/eliminar_constructora/${id}/`;  // URL para eliminar constructora
+            message = '¿Estás seguro de que deseas eliminar esta constructora?';  // Mensaje para eliminar constructora
+        }
+    
+        // Mostrar la pregunta de confirmación en el centro
+        iziToast.question({
+            timeout: 20000,
+            close: false,
+            overlay: false,
+            displayMode: 'once',
+            id: 'question',
+            zindex: 999,
+            title: 'Confirmación',
+            message: message,
+            position: 'center',  // La pregunta de confirmación aparece en el centro
+            buttons: [
+                ['<button><b>SÍ</b></button>', function (instance, toast) {
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}', // Si CSRF está habilitado
+                        },
+                    })
+                    .then(response => response.json())  // Procesar la respuesta JSON
+                    .then(data => {
+                        if (data.success) {
+                            // Mensaje de éxito en la parte superior derecha
+                            iziToast.success({
+                                title: 'Éxito',
+                                message: data.message,
+                                timeout: 5000,  // Aumentar el tiempo de visualización
+                                position: 'topRight'  // Ajustar para que el mensaje de éxito esté en la parte superior derecha
+                            });
+                        } else {
+                            // Mensaje de error más específico
+                            iziToast.error({
+                                title: 'Error',
+                                message: data.message || 'No se pudo eliminar debido a su estado.',
+                                timeout: 5000,  // Aumentar el tiempo de visualización
+                                position: 'topRight'  // Ajustar para que el mensaje de error esté en la parte superior derecha
+                            });
+                        }
+                        // Esperar un poco más antes de recargar la página para que el mensaje se lea
+                        setTimeout(() => location.reload(), 2000); // Recargar la página después de 2 segundos
+                    })
+                    .catch(error => {
+                        // Mensaje de error en la parte superior derecha en caso de fallo en la eliminación
+                        iziToast.error({
+                            title: 'Error',
+                            message: 'Ocurrió un problema al intentar eliminar.',
+                            timeout: 5000,  // Aumentar el tiempo de visualización
+                            position: 'topRight'  // Ajustar para que el mensaje de error esté en la parte superior derecha
+                        });
+                    });
+    
+                    instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+                }, true],
+                ['<button>NO</button>', function (instance, toast) {
+                    instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+                }]
+            ]
+        });
+    }
+</script>
+
+
+
+
+
+{% if messages %}
+{% for mensajeConfirmacion in messages %}
+    <script>
+        // Función para mostrar el mensaje de éxito
+        function showSuccessMessage(message) {
+            iziToast.success({
+                title: 'Confirmación',
+                message: message,
+                position: 'topRight'
+            });
+        }
+
+        // Función para mostrar el mensaje de error
+        function showErrorMessage(message) {
+            iziToast.error({
+                title: 'Error',
+                message: message,
+                position: 'topRight'
+            });
+        }
+
+        // Verifica el tipo de mensaje y llama a la función correspondiente
+        if ("{{ mensajeConfirmacion.tags }}" == "success") {
+            showSuccessMessage('{{ mensajeConfirmacion }}');
+        } else if ("{{ mensajeConfirmacion.tags }}" == "error") {
+            showErrorMessage('{{ mensajeConfirmacion }}');
+        }
+    </script>
+
+    <script>
+        function showDeleteConfirmation(id, type) {
+            let url = '';
+            let message = '';
+            
+            // URL y mensaje dependiendo del tipo de entidad
+            if (type === 'vivienda') {
+                url = `/viviendas/eliminar/${id}/`;  // URL para eliminar vivienda
+                message = '¿Estás seguro de que deseas eliminar esta vivienda?';
+            } else if (type === 'constructora') {
+                url = `/constructoras/eliminar/${id}/`;  // URL para eliminar constructora
+                message = '¿Estás seguro de que deseas eliminar esta constructora?';
+            } else if (type === 'cliente') {
+                url = `/clientes/eliminar/${id}/`;  // URL para eliminar cliente
+                message = '¿Estás seguro de que deseas eliminar este cliente?';
+            } else if (type === 'actividad') {
+                url = `/actividades/eliminar/${id}/`;  // URL para eliminar actividad
+                message = '¿Estás seguro de que deseas eliminar esta actividad?';
+            }
+        
+            // Mostrar la pregunta de confirmación en el centro
+            iziToast.question({
+                timeout: 20000,
+                close: false,
+                overlay: false,
+                displayMode: 'once',
+                id: 'question',
+                zindex: 999,
+                title: 'Confirmación',
+                message: message,
+                position: 'center',
+                buttons: [
+                    ['<button><b>SÍ</b></button>', function (instance, toast) {
+                        fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRFToken': '{{ csrf_token }}',  // Si CSRF está habilitado
+                                'Content-Type': 'application/json', // JSON content type
+                            },
+                            body: JSON.stringify({id: id}),  // Enviar el ID del elemento
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Mostrar mensaje de éxito con iziToast
+                                iziToast.success({
+                                    title: 'Éxito',
+                                    message: data.message,
+                                    timeout: 5000,
+                                    position: 'topRight'
+                                });
+                            } else {
+                                // Mostrar mensaje de error con iziToast
+                                iziToast.error({
+                                    title: 'Error',
+                                    message: data.message || 'No se pudo eliminar.',
+                                    timeout: 5000,
+                                    position: 'topRight'
+                                });
+                            }
+                            setTimeout(() => location.reload(), 2000); // Recargar la página después de 2 segundos
+                        })
+                        .catch(error => {
+                            iziToast.error({
+                                title: 'Error',
+                                message: 'Ocurrió un problema al intentar eliminar.',
+                                timeout: 5000,
+                                position: 'topRight'
+                            });
+                        });
+        
+                        instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+                    }, true],
+                    ['<button>NO</button>', function (instance, toast) {
+                        instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+                    }]
+                ]
+            });
+        }
+        
+        
+    </script>
+    
+    
+{% endfor %}
+{% endif %}
+
+
+</body>
+
+

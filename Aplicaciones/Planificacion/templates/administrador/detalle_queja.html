@@ -1,0 +1,20 @@
+{% extends 'administrador/plantilla-admin.html' %}
+{% block contenido %}
+<div class="container py-4">
+    <h1 class="text-primary text-center">Detalle de la Queja</h1>
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <h3 class="text-dark">Queja de {{ queja.nombre }} {{ queja.apellido }}</h3>
+            <p><strong>Cédula:</strong> {{ queja.cedula }}</p>
+            <p><strong>Detalle:</strong> {{ queja.detalle }}</p>
+            <p><strong>Correo Electrónico:</strong> {{ queja.Email }}</p>
+            {% if queja.foto %}
+            <p><strong>Foto:</strong></p>
+            <img src="{{ queja.foto.url }}" alt="Foto" class="img-fluid">
+            {% else %}
+            <p class="text-muted">No hay foto disponible</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'administrador/plantilla-admin.html' %}
+{% load static %}
+
+{% block contenido %}
+<div class="bg-light py-4">
+    <div class="container">
+        <h1 class="text-primary text-center">Editar Cliente</h1>
+        <p class="text-muted text-center">Actualiza la información del cliente</p>
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <form method="POST" action="{% url 'editar_cliente' cliente.id_cliente %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group mb-3">
+                                <label for="nombre" class="form-label">Nombre</label>
+                                <input type="text" name="nombre" id="nombre" class="form-control" value="{{ cliente.nombre }}" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="telefono" class="form-label">Teléfono</label>
+                                <input type="text" name="telefono" id="telefono" class="form-control" value="{{ cliente.telefono }}" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="email" class="form-label">Correo Electrónico</label>
+                                <input type="email" name="email" id="email" class="form-control" value="{{ cliente.email }}" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="foto" class="form-label">Foto del Cliente (opcional)</label>
+                                <input type="file" name="foto" id="foto" class="form-control" accept="image/*">
+                                {% if cliente.foto %}
+                                    <div class="mt-2">
+                                        <img src="{{ cliente.foto.url }}" alt="Foto del Cliente" style="height: 80px; width: 80px; object-fit: cover;">
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Actualizar Cliente</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#foto").fileinput({
+        lenguaje: "es",
+        allowedFileExtensions: ["jpg", "png", "jpeg"],
+        showCaption: false,
+        dropZoneEnabled: true,
+        showClose: false
+    });
+</script>
+{% endblock %}

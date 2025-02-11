@@ -1,0 +1,102 @@
+{% extends 'administrador/plantilla-admin.html' %}
+{% block contenido %}
+<div class="container py-4">
+    <h1 class="text-primary text-center">Lista de Constructoras</h1>
+    <div class="mb-3 text-end">
+        <a href="{% url 'crear_constructora' %}" class="btn btn-success">Registrar Nueva Constructora</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped" id="constructoras">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Ciudad</th>
+                    <th>Dirección</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for constructora in constructoras %}
+                <tr>
+                    <td>{{ constructora.nombre }}</td>
+                    <td>{{ constructora.telefono }}</td>
+                    <td>{{ constructora.email }}</td>
+                    <td>{{ constructora.ciudad }}</td>
+                    <td>{{ constructora.direccion }}</td>
+                    <td>
+                        <a href="{% url 'detalle_constructora' constructora.id_constructora %}" class="btn btn-info btn-sm">Ver Detalle</a>
+                        <a href="{% url 'editar_constructora' constructora.id_constructora %}" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="{% url 'eliminar_constructora' constructora.id_constructora %}" class="btn btn-danger btn-sm" onclick="return confirm('Estás seguro de eliminar esta constructora?');">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#constructoras').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy',
+                'excel',
+                'pdf',
+                'print'
+            ],
+            language: {
+                url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
+            }
+        });
+    });
+</script>
+<style>
+    /* Hacer la tabla responsiva */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Estilo para las tablas en pantallas pequeñas */
+    @media (max-width: 768px) {
+        .table thead {
+            display: none; /* Ocultamos los encabezados */
+        }
+
+        .table tr {
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .table td {
+            display: block;
+            text-align: right;
+            font-size: 14px;
+            padding: 8px;
+            position: relative;
+        }
+
+        .table td::before {
+            content: attr(data-label);
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-weight: bold;
+            padding-right: 10px;
+        }
+
+        .table td:last-child {
+            text-align: left;
+        }
+    }
+
+    /* Estilo para los botones de la tabla */
+    .btn-sm {
+        margin: 2px;
+    }
+
+</style>
+{% endblock %}

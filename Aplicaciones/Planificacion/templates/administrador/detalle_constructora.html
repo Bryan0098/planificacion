@@ -1,0 +1,78 @@
+{% extends 'administrador/plantilla-admin.html' %}
+{% load static %}
+
+{% block contenido %}
+<div class="bg-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center text-primary mb-4">Reporte de Constructora</h1>
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Información de la Constructora -->
+                            <div class="col-md-6">
+                                <h4 class="mb-3">Detalles de la Constructora</h4>
+                                <table class="table">
+                                    <tr>
+                                        <th>Nombre:</th>
+                                        <td>{{ constructora.nombre }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Teléfono:</th>
+                                        <td>{{ constructora.telefono }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Email:</th>
+                                        <td>{{ constructora.email }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Ciudad:</th>
+                                        <td>{{ constructora.ciudad }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Dirección:</th>
+                                        <td>{{ constructora.direccion }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Botón para Imprimir -->
+                        <div class="mt-4 text-center">
+                            <button class="btn btn-primary" onclick="window.print()">Imprimir Reporte</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estilo para la impresión -->
+<style>
+    @media print {
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 100%;
+            padding: 0;
+        }
+        .btn {
+            display: none;
+        }
+        .card {
+            border: none;
+        }
+        .card-body {
+            padding: 15px;
+        }
+        .table th, .table td {
+            text-align: left;
+            padding: 8px;
+        }
+    }
+</style>
+
+{% endblock %}

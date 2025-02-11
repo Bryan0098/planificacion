@@ -1,0 +1,134 @@
+{% extends 'administrador/plantilla-admin.html' %}
+{% block contenido %}
+<div class="container py-4">
+    <h1 class="text-primary text-center">Lista de Actividades</h1>
+    <div class="mb-3 text-end">
+        <a href="{% url 'crear_actividad' %}" class="btn btn-success">Registrar Nueva Actividad</a>
+    </div>
+    <table class="table table-striped" id="actividades">
+        <thead>
+            <tr>
+                <th>Descripción</th>
+                <th>Fecha de Inicio</th>
+                <th>Fecha de Fin</th>
+                <th>Vivienda</th>
+                <th>Constructora</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for actividad in actividades %}
+            <tr>
+                <td>{{ actividad.descripcion }}</td>
+                <td>{{ actividad.fecha_inicio }}</td>
+                <td>{{ actividad.fecha_fin }}</td>
+                <td>{{ actividad.id_vivienda.nombre }}</td>
+                <td>{{ actividad.id_constructora.nombre }}</td>
+                <td>
+                    <a href="{% url 'detalle_actividad' actividad.id_actividad %}" class="btn btn-info btn-sm">Ver Detalle</a>
+                    <a href="{% url 'editar_actividad' actividad.id_actividad %}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="{% url 'eliminar_actividad' actividad.id_actividad %}" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar esta actividad?');">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#actividades').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy',
+                'excel',
+                'pdf',
+                'print'
+            ],
+            language: {
+                url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
+            }
+        });
+    });
+</script>
+
+<style>
+    /* Hacer la tabla responsiva */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Estilo para las tablas en pantallas pequeñas */
+@media (max-width: 768px) {
+    .table thead {
+        display: none; /* Ocultamos los encabezados */
+    }
+
+    .table tr {
+        display: block;
+        margin-bottom: 1rem;
+    }
+
+    .table td {
+        display: block;
+        text-align: right;
+        font-size: 14px;
+        padding: 8px;
+        position: relative;
+    }
+
+    .table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-weight: bold;
+        padding-right: 10px;
+    }
+
+    .table td:last-child {
+        text-align: left;
+    }
+
+    /* Ajustar los botones en pantallas pequeñas */
+    .btn-sm {
+        margin: 2px;
+        font-size: 12px;
+    }
+}
+
+/* Optimización de imágenes para pantallas pequeñas */
+@media (max-width: 768px) {
+    table img {
+        max-width: 50px; /* Ajusta el tamaño de la imagen en pantallas pequeñas */
+        height: auto;
+        object-fit: cover;
+    }
+}
+
+/* Para pantallas más grandes, optimizamos el tamaño de la tabla */
+@media (min-width: 768px) {
+    .table img {
+        max-width: 80px; /* Tamaño más adecuado para pantallas grandes */
+        height: auto;
+        object-fit: cover;
+    }
+}
+
+/* Hacer los botones de la tabla un poco más grandes y fáciles de clicar en escritorio */
+@media (min-width: 768px) {
+    .btn-sm {
+        font-size: 14px;
+    }
+}
+
+/* Asegurar que los elementos de la tabla no se desborden */
+.table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+</style>
+
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'administrador/plantilla-admin.html' %}
+{% load static %}
+
+{% block contenido %}
+<div class="bg-light py-4">
+    <div class="container">
+        <h1 class="text-primary text-center">Editar Vivienda</h1>
+        <p class="text-muted text-center">Actualiza la información de la vivienda</p>
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <form method="POST" action="{% url 'editar_vivienda' vivienda.id_vivienda %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group mb-3">
+                                <label for="nombre" class="form-label">Nombre</label>
+                                <input type="text" name="nombre" id="nombre" class="form-control" value="{{ vivienda.nombre }}" required>
+                            </div>
+                            
+                            <div class="form-group mb-3">
+                                <label for="direccion" class="form-label">Dirección</label>
+                                <input type="text" name="direccion" id="direccion" class="form-control" value="{{ vivienda.direccion }}" required>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="tipo" class="form-label">Tipo de Vivienda</label>
+                                <select name="tipo" id="tipo" class="form-control" required>
+                                    <option value="Departamento" {% if vivienda.tipo == 'Departamento' %}selected{% endif %}>Departamento</option>
+                                    <option value="Casa" {% if vivienda.tipo == 'Casa' %}selected{% endif %}>Casa</option>
+                                    <option value="Dúplex" {% if vivienda.tipo == 'Dúplex' %}selected{% endif %}>Dúplex</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="estado" class="form-label">Estado</label>
+                                <select name="estado" id="estado" class="form-control" required>
+                                    <option value="En construcción" {% if vivienda.estado == 'En construcción' %}selected{% endif %}>En construcción</option>
+                                    <option value="Terminada" {% if vivienda.estado == 'Terminada' %}selected{% endif %}>Terminada</option>
+                                    <option value="Vendida" {% if vivienda.estado == 'Vendida' %}selected{% endif %}>Vendida</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="id_constructora" class="form-label">Constructora</label>
+                                <select name="id_constructora" id="id_constructora" class="form-control" required>
+                                    <option value="">Selecciona una opción</option>
+                                    {% for constructora in constructoras %}
+                                        <option value="{{ constructora.id_constructora }}" {% if vivienda.id_constructora.id_constructora == constructora.id_constructora %}selected{% endif %}>{{ constructora.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="id_cliente" class="form-label">Cliente (Opcional)</label>
+                                <select name="id_cliente" id="id_cliente" class="form-control">
+                                    <option value="">Sin cliente</option>
+                                    {% for cliente in clientes %}
+                                        <option value="{{ cliente.id_cliente }}" {% if vivienda.id_cliente and vivienda.id_cliente.id_cliente == cliente.id_cliente %}selected{% endif %}>{{ cliente.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="foto" class="form-label">Foto de la Vivienda (Opcional)</label>
+                                <input type="file" name="foto" id="foto" class="form-control">
+                                {% if vivienda.foto %}
+                                    <div class="mt-2">
+                                        <img src="{{ vivienda.foto.url }}" alt="Foto de la Vivienda" style="height: 100px; width: 100px; object-fit: cover;">
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">Actualizar Vivienda</button>
+                        </form>
+                    </div>              
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

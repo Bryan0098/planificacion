@@ -1,0 +1,59 @@
+{% extends 'administrador/plantilla-admin.html' %}
+{% load static %}
+
+{% block contenido %}
+<div class="bg-light py-4">
+    <div class="container">
+        <h1 class="text-primary text-center">Registrar Actividad</h1>
+        <p class="text-muted text-center">Completa el formulario para registrar una nueva actividad</p>
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <form method="POST" action="{% url 'crear_actividad' %}">
+                            {% csrf_token %}
+                            <div class="form-group mb-3">
+                                <label for="descripcion" class="form-label">Descripción</label>
+                                <input type="text" name="descripcion" id="descripcion" class="form-control" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="fecha_inicio" class="form-label">Fecha de Inicio</label>
+                                <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control"
+                                    value="{{ today|date:'Y-m-d' }}" required readonly>
+                            </div>
+                            
+                            <div class="form-group mb-3">
+                                <label for="fecha_fin" class="form-label">Fecha de Fin</label>
+                                <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" required 
+                                    min="{{ today|date:'Y-m-d' }}">
+                            </div>
+                            
+                            
+                            <div class="form-group mb-3">
+                                <label for="id_vivienda" class="form-label">Vivienda</label>
+                                <select name="id_vivienda" id="id_vivienda" class="form-control" required>
+                                    <option value="">Seleccione una vivienda</option>
+                                    {% for vivienda in viviendas %}
+                                        <option value="{{ vivienda.id_vivienda }}">{{ vivienda.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="id_constructora" class="form-label">Constructora</label>
+                                <select name="id_constructora" id="id_constructora" class="form-control" required>
+                                    <option value="">Seleccione una constructora</option>
+                                    {% for constructora in constructoras %}
+                                        <option value="{{ constructora.id_constructora }}">{{ constructora.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Registrar Actividad</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
